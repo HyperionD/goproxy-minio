@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -45,8 +46,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(minioURL, accessKeyID, secretAccessKey, bucketName)
-
 	g := goproxy.New()
 	g.Cacher = &cacher.MinIO{
 		Endpoint:        minioURL,
@@ -60,8 +59,8 @@ func main() {
 		"GOPROXY=https://goproxy.cn,direct",
 		"GOSUMDB=off",
 	)
-	err := http.ListenAndServe("0.0.0.0:8080", g)
-	if err != nil {
-		fmt.Println(err)
-	}
+
+	log.Println("Listen on 8080")
+
+	log.Fatal(http.ListenAndServe("0.0.0.0:8080", g))
 }
